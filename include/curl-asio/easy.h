@@ -235,11 +235,11 @@ namespace curl
 		IMPLEMENT_CURL_OPTION(set_port, native::CURLOPT_PORT, long);
 		IMPLEMENT_CURL_OPTION_BOOLEAN(set_tcp_no_delay, native::CURLOPT_TCP_NODELAY);
 		IMPLEMENT_CURL_OPTION(set_address_scope, native::CURLOPT_ADDRESS_SCOPE, long);
-		#ifdef NEWCURL
+#if LIBCURL_VERSION_NUM >= 0x072500
 		IMPLEMENT_CURL_OPTION_BOOLEAN(set_tcp_keep_alive, native::CURLOPT_TCP_KEEPALIVE);
 		IMPLEMENT_CURL_OPTION_BOOLEAN(set_tcp_keep_idle, native::CURLOPT_TCP_KEEPIDLE);
 		IMPLEMENT_CURL_OPTION(set_tcp_keep_intvl, native::CURLOPT_TCP_KEEPINTVL, long);
-		#endif
+#endif
 		// authentication options
 
 		enum netrc_t { netrc_optional = native::CURL_NETRC_OPTIONAL, netrc_ignored = native::CURL_NETRC_IGNORED, netrc_required = native::CURL_NETRC_REQUIRED };
@@ -314,9 +314,9 @@ namespace curl
 		void add_mail_rcpt(const std::string& mail_rcpt, boost::system::error_code& ec);
 		void set_mail_rcpts(boost::shared_ptr<string_list> mail_rcpts);
 		void set_mail_rcpts(boost::shared_ptr<string_list> mail_rcpts, boost::system::error_code& ec);
-		#ifdef NEWCURL
+#if LIBCURL_VERSION_NUM >= 0x072500
 		IMPLEMENT_CURL_OPTION_STRING(set_mail_auth, native::CURLOPT_MAIL_AUTH);
-		#endif
+#endif
 
 		// TFTP options
 
@@ -415,10 +415,10 @@ namespace curl
 		void add_resolve(const std::string& resolved_host, boost::system::error_code& ec);
 		void set_resolves(boost::shared_ptr<string_list> resolved_hosts);
 		void set_resolves(boost::shared_ptr<string_list> resolved_hosts, boost::system::error_code& ec);
-		#ifdef NEWCURL
+#if LIBCURL_VERSION_NUM >= 0x072400
 		IMPLEMENT_CURL_OPTION_STRING(set_dns_servers, native::CURLOPT_DNS_SERVERS);
 		IMPLEMENT_CURL_OPTION(set_accept_timeout_ms, native::CURLOPT_ACCEPTTIMEOUT_MS, long);
-		#endif
+#endif
 
 		// SSL and security options
 
@@ -451,9 +451,9 @@ namespace curl
 		IMPLEMENT_CURL_OPTION_STRING(set_edg_socket, native::CURLOPT_EGDSOCKET);
 		IMPLEMENT_CURL_OPTION_STRING(set_ssl_cipher_list, native::CURLOPT_SSL_CIPHER_LIST);
 		IMPLEMENT_CURL_OPTION_BOOLEAN(set_ssl_session_id_cache, native::CURLOPT_SSL_SESSIONID_CACHE);
-		#ifdef NEWCURL
+#if LIBCURL_VERSION_NUM >= 0x072500
 		IMPLEMENT_CURL_OPTION(set_ssl_options, native::CURLOPT_SSL_OPTIONS, long);
-		#endif
+#endif
 		IMPLEMENT_CURL_OPTION_STRING(set_krb_level, native::CURLOPT_KRBLEVEL);
 		IMPLEMENT_CURL_OPTION(set_gssapi_delegation, native::CURLOPT_GSSAPI_DELEGATION, long);
 
