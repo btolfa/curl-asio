@@ -30,9 +30,13 @@ namespace curl
 				could_not_connect = native::CURLE_COULDNT_CONNECT,
 				ftp_weird_server_reply = native::CURLE_FTP_WEIRD_SERVER_REPLY,
 				remote_access_denied = native::CURLE_REMOTE_ACCESS_DENIED,
+				#ifdef NEWCURL
 				ftp_accept_failed = native::CURLE_FTP_ACCEPT_FAILED,
+				#endif
 				ftp_weird_pass_reply = native::CURLE_FTP_WEIRD_PASS_REPLY,
+				#ifdef NEWCURL
 				ftp_accept_timeout = native::CURLE_FTP_ACCEPT_TIMEOUT,
+				#endif
 				ftp_weird_pasv_reply = native::CURLE_FTP_WEIRD_PASV_REPLY,
 				ftp_weird_227_format = native::CURLE_FTP_WEIRD_227_FORMAT,
 				ftp_cant_get_host = native::CURLE_FTP_CANT_GET_HOST,
@@ -125,7 +129,9 @@ namespace curl
 				in_use = native::CURLSHE_IN_USE,
 				invalid = native::CURLSHE_INVALID,
 				nomem = native::CURLSHE_NOMEM,
+				#ifdef NEWCURL
 				not_built_in = native::CURLSHE_NOT_BUILT_IN
+				#endif
 			};
 		}
 
