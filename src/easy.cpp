@@ -6,7 +6,6 @@
 	C++ wrapper for libcurl's easy interface
 */
 
-#include <boost/make_shared.hpp>
 #include <curl-asio/easy.h>
 #include <curl-asio/error_code.h>
 #include <curl-asio/form.h>

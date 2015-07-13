@@ -56,7 +56,7 @@ ENDIF()
 
 # Find dependencies
 FIND_PACKAGE(CURLASIO-CURL REQUIRED)
-FIND_PACKAGE(Boost REQUIRED COMPONENTS chrono date_time system thread)
+FIND_PACKAGE(Boost REQUIRED)
 
 find_package(Asio REQUIRED)
 add_definitions(-DASIO_STANDALONE -DASIO_NO_DEPRECATED)
