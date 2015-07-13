@@ -19,7 +19,7 @@ OPTION(BUILD_EXAMPLES "Build the examples" ON)
 IF(NOT MSVC)
 	OPTION(ENABLE_CPP11 "Enable features and examples which require C++11" ON)
 	IF(ENABLE_CPP11)
-		SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+		SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 	ENDIF()
 ENDIF()
 

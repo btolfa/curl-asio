@@ -8,7 +8,7 @@
 
 boost::ptr_set<curl::easy> active_downloads;
 
-void handle_download_completed(const boost::system::error_code& err, std::string url, curl::easy* easy)
+void handle_download_completed(const std::error_code& err, std::string url, curl::easy* easy)
 {
 	if (!err)
 	{
@@ -32,8 +32,10 @@ void start_download(curl::multi& multi, const std::string& url)
 	
 	easy->set_url(url);
 	easy->set_sink(boost::make_shared<std::ofstream>(file_name.c_str(), std::ios::binary));
-	easy->async_perform(boost::bind(handle_download_completed, boost::asio::placeholders::error, url, easy.get()));
-	
+	easy->async_perform([url, easy = easy.get()](const std::error_code& err){
+		handle_download_completed(err, url, easy);
+	});
+
 	active_downloads.insert(easy);
 }
 
@@ -50,7 +52,7 @@ int main(int argc, char* argv[])
 	char* url_file_name = argv[1];
 	
 	// start by creating an io_service object
-	boost::asio::io_service io_service;
+	asio::io_service io_service;
 	
 	// construct an instance of curl::multi
 	curl::multi manager(io_service);

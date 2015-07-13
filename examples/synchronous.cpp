@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 	char* file_name = argv[2];
 	
 	// start by creating an io_service object
-	boost::asio::io_service io_service;
+	asio::io_service io_service;
 	
 	// construct an instance of curl::easy
 	curl::easy downloader(io_service);
@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 	downloader.set_sink(boost::make_shared<std::ofstream>(file_name, std::ios::binary));
 	
 	// download the file
-	boost::system::error_code ec;
+	std::error_code ec;
 	downloader.perform(ec);
 
 	// error handling

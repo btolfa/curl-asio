@@ -6,14 +6,14 @@
 
 #pragma once
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <memory>
 
 namespace curl
 {
-	typedef boost::asio::ip::tcp::socket socket_type;
+	typedef asio::ip::tcp::socket socket_type;
 
 	class easy;
 

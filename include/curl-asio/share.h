@@ -11,7 +11,7 @@
 #include "config.h"
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/thread/mutex.hpp>
+#include <mutex>
 #include "initialization.h"
 #include "native.h"
 
@@ -44,6 +44,6 @@ namespace curl
 
 		initialization::ptr initref_;
 		native::CURLSH* handle_;
-		boost::mutex mutex_;
+		std::mutex mutex_;
 	};
 }

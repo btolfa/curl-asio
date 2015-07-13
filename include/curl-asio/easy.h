@@ -9,8 +9,7 @@
 #pragma once
 
 #include "config.h"
-#include <boost/asio.hpp>
-#include <boost/bind.hpp>
+#include <asio.hpp>
 #include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/preprocessor/stringize.hpp>
@@ -24,67 +23,67 @@
 #define IMPLEMENT_CURL_OPTION(FUNCTION_NAME, OPTION_NAME, OPTION_TYPE) \
 	inline void FUNCTION_NAME(OPTION_TYPE arg) \
 	{ \
-		boost::system::error_code ec; \
+		std::error_code ec; \
 		FUNCTION_NAME(arg, ec); \
-		boost::asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
+		asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
 	} \
-	inline void FUNCTION_NAME(OPTION_TYPE arg, boost::system::error_code& ec) \
+	inline void FUNCTION_NAME(OPTION_TYPE arg, std::error_code& ec) \
 	{ \
-		ec = boost::system::error_code(native::curl_easy_setopt(handle_, OPTION_NAME, arg)); \
+		ec = std::error_code(native::curl_easy_setopt(handle_, OPTION_NAME, arg)); \
 	}
 
 #define IMPLEMENT_CURL_OPTION_BOOLEAN(FUNCTION_NAME, OPTION_NAME) \
 	inline void FUNCTION_NAME(bool enabled) \
 	{ \
-		boost::system::error_code ec; \
+		std::error_code ec; \
 		FUNCTION_NAME(enabled, ec); \
-		boost::asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
+		asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
 	} \
-	inline void FUNCTION_NAME(bool enabled, boost::system::error_code& ec) \
+	inline void FUNCTION_NAME(bool enabled, std::error_code& ec) \
 	{ \
-		ec = boost::system::error_code(native::curl_easy_setopt(handle_, OPTION_NAME, enabled ? 1L : 0L)); \
+		ec = std::error_code(native::curl_easy_setopt(handle_, OPTION_NAME, enabled ? 1L : 0L)); \
 	}
 
 #define IMPLEMENT_CURL_OPTION_ENUM(FUNCTION_NAME, OPTION_NAME, ENUM_TYPE, OPTION_TYPE) \
 	inline void FUNCTION_NAME(ENUM_TYPE arg) \
 	{ \
-		boost::system::error_code ec; \
+		std::error_code ec; \
 		FUNCTION_NAME(arg, ec); \
-		boost::asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
+		asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
 	} \
-	inline void FUNCTION_NAME(ENUM_TYPE arg, boost::system::error_code& ec) \
+	inline void FUNCTION_NAME(ENUM_TYPE arg, std::error_code& ec) \
 	{ \
-		ec = boost::system::error_code(native::curl_easy_setopt(handle_, OPTION_NAME, (OPTION_TYPE)arg)); \
+		ec = std::error_code(native::curl_easy_setopt(handle_, OPTION_NAME, (OPTION_TYPE)arg)); \
 	}
 
 #define IMPLEMENT_CURL_OPTION_STRING(FUNCTION_NAME, OPTION_NAME) \
 	inline void FUNCTION_NAME(const char* str) \
 	{ \
-		boost::system::error_code ec; \
+		std::error_code ec; \
 		FUNCTION_NAME(str, ec); \
-		boost::asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
+		asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
 	} \
-	inline void FUNCTION_NAME(const char* str, boost::system::error_code& ec) \
+	inline void FUNCTION_NAME(const char* str, std::error_code& ec) \
 	{ \
-		ec = boost::system::error_code(native::curl_easy_setopt(handle_, OPTION_NAME, str)); \
+		ec = std::error_code(native::curl_easy_setopt(handle_, OPTION_NAME, str)); \
 	} \
 	inline void FUNCTION_NAME(const std::string& str) \
 	{ \
-		boost::system::error_code ec; \
+		std::error_code ec; \
 		FUNCTION_NAME(str, ec); \
-		boost::asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
+		asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
 	} \
-	inline void FUNCTION_NAME(const std::string& str, boost::system::error_code& ec) \
+	inline void FUNCTION_NAME(const std::string& str, std::error_code& ec) \
 	{ \
-		ec = boost::system::error_code(native::curl_easy_setopt(handle_, OPTION_NAME, str.c_str())); \
+		ec = std::error_code(native::curl_easy_setopt(handle_, OPTION_NAME, str.c_str())); \
 	}
 
 #define IMPLEMENT_CURL_OPTION_GET_STRING(FUNCTION_NAME, OPTION_NAME) \
 	inline std::string FUNCTION_NAME() \
 	{ \
 		char *info = NULL; \
-		boost::system::error_code ec = boost::system::error_code(native::curl_easy_getinfo(handle_, OPTION_NAME, &info)); \
-		boost::asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
+		std::error_code ec = std::error_code(native::curl_easy_getinfo(handle_, OPTION_NAME, &info)); \
+		asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
 		return info; \
 	}
 
@@ -92,8 +91,8 @@
 	inline double FUNCTION_NAME() \
 	{ \
 		double info; \
-		boost::system::error_code ec = boost::system::error_code(native::curl_easy_getinfo(handle_, OPTION_NAME, &info)); \
-		boost::asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
+		std::error_code ec = std::error_code(native::curl_easy_getinfo(handle_, OPTION_NAME, &info)); \
+		asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
 		return info; \
 	}
 
@@ -101,8 +100,8 @@
 	inline long FUNCTION_NAME() \
 	{ \
 		long info; \
-		boost::system::error_code ec = boost::system::error_code(native::curl_easy_getinfo(handle_, OPTION_NAME, &info)); \
-		boost::asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
+		std::error_code ec = std::error_code(native::curl_easy_getinfo(handle_, OPTION_NAME, &info)); \
+		asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
 		return info; \
 	}
 
@@ -111,8 +110,8 @@
 	{ \
 		struct native::curl_slist *info; \
 		std::vector<std::string> results; \
-		boost::system::error_code ec = boost::system::error_code(native::curl_easy_getinfo(handle_, OPTION_NAME, &info)); \
-		boost::asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
+		std::error_code ec = std::error_code(native::curl_easy_getinfo(handle_, OPTION_NAME, &info)); \
+		asio::detail::throw_error(ec, BOOST_PP_STRINGIZE(FUNCTION_NAME)); \
 		struct native::curl_slist *it = info; \
 		while (it) \
 		{ \
@@ -134,24 +133,24 @@ namespace curl
 		public boost::noncopyable
 	{
 	public:
-		typedef boost::function<void(const boost::system::error_code& err)> handler_type;
+		typedef boost::function<void(const std::error_code& err)> handler_type;
 
 		static easy* from_native(native::CURL* native_easy);
 
-		easy(boost::asio::io_service& io_service);
+		easy(asio::io_service& io_service);
 		easy(multi& multi_handle);
 		~easy();
 
 		inline native::CURL* native_handle() { return handle_; }
 
 		void perform();
-		void perform(boost::system::error_code& ec);
+		void perform(std::error_code& ec);
 		void async_perform(handler_type handler);
 		void cancel();
 		void set_source(boost::shared_ptr<std::istream> source);
-		void set_source(boost::shared_ptr<std::istream> source, boost::system::error_code& ec);
+		void set_source(boost::shared_ptr<std::istream> source, std::error_code& ec);
 		void set_sink(boost::shared_ptr<std::ostream> sink);
-		void set_sink(boost::shared_ptr<std::ostream> sink, boost::system::error_code& ec);
+		void set_sink(boost::shared_ptr<std::ostream> sink, std::error_code& ec);
 
 		typedef boost::function<bool(native::curl_off_t dltotal, native::curl_off_t dlnow, native::curl_off_t ultotal, native::curl_off_t ulnow)> progress_callback_t;
 		void unset_progress_callback();
@@ -252,14 +251,14 @@ namespace curl
 		enum httpauth_t { auth_basic = CURLAUTH_BASIC, auth_digest, auth_digest_ie, auth_gss_negotiate, auth_ntml, auth_nhtml_wb, auth_any, auth_any_safe };
 		inline void set_http_auth(httpauth_t auth, bool auth_only)
 		{
-			boost::system::error_code ec;
+			std::error_code ec;
 			set_http_auth(auth, auth_only, ec);
-			boost::asio::detail::throw_error(ec, "set_http_auth");
+			asio::detail::throw_error(ec, "set_http_auth");
 		}
-		inline void set_http_auth(httpauth_t auth, bool auth_only, boost::system::error_code& ec)
+		inline void set_http_auth(httpauth_t auth, bool auth_only, std::error_code& ec)
 		{
 			long l = ((long)auth | (auth_only ? CURLAUTH_ONLY : 0L));
-			ec = boost::system::error_code(native::curl_easy_setopt(handle_, native::CURLOPT_HTTPAUTH, l));
+			ec = std::error_code(native::curl_easy_setopt(handle_, native::CURLOPT_HTTPAUTH, l));
 		}
 		IMPLEMENT_CURL_OPTION(set_tls_auth_type, native::CURLOPT_TLSAUTH_TYPE, long);
 		IMPLEMENT_CURL_OPTION_STRING(set_tls_auth_user, native::CURLOPT_TLSAUTH_USERNAME);
@@ -277,24 +276,24 @@ namespace curl
 		IMPLEMENT_CURL_OPTION(set_post_redir, native::CURLOPT_POSTREDIR, long);
 		IMPLEMENT_CURL_OPTION_BOOLEAN(set_post, native::CURLOPT_POST);
 		void set_post_fields(const std::string& post_fields);
-		void set_post_fields(const std::string& post_fields, boost::system::error_code& ec);
+		void set_post_fields(const std::string& post_fields, std::error_code& ec);
 		IMPLEMENT_CURL_OPTION(set_post_fields, native::CURLOPT_POSTFIELDS, void*);
 		IMPLEMENT_CURL_OPTION(set_post_field_size, native::CURLOPT_POSTFIELDSIZE, long);
 		IMPLEMENT_CURL_OPTION(set_post_field_size_large, native::CURLOPT_POSTFIELDSIZE_LARGE, native::curl_off_t);
 		void set_http_post(boost::shared_ptr<form> form);
-		void set_http_post(boost::shared_ptr<form> form, boost::system::error_code& ec);
+		void set_http_post(boost::shared_ptr<form> form, std::error_code& ec);
 		IMPLEMENT_CURL_OPTION_STRING(set_referer, native::CURLOPT_REFERER);
 		IMPLEMENT_CURL_OPTION_STRING(set_user_agent, native::CURLOPT_USERAGENT);
 		void add_header(const std::string& name, const std::string& value);
-		void add_header(const std::string& name, const std::string& value, boost::system::error_code& ec);
+		void add_header(const std::string& name, const std::string& value, std::error_code& ec);
 		void add_header(const std::string& header);
-		void add_header(const std::string& header, boost::system::error_code& ec);
+		void add_header(const std::string& header, std::error_code& ec);
 		void set_headers(boost::shared_ptr<string_list> headers);
-		void set_headers(boost::shared_ptr<string_list> headers, boost::system::error_code& ec);
+		void set_headers(boost::shared_ptr<string_list> headers, std::error_code& ec);
 		void add_http200_alias(const std::string& http200_alias);
-		void add_http200_alias(const std::string& http200_alias, boost::system::error_code& ec);
+		void add_http200_alias(const std::string& http200_alias, std::error_code& ec);
 		void set_http200_aliases(boost::shared_ptr<string_list> http200_aliases);
-		void set_http200_aliases(boost::shared_ptr<string_list> http200_aliases, boost::system::error_code& ec);
+		void set_http200_aliases(boost::shared_ptr<string_list> http200_aliases, std::error_code& ec);
 		IMPLEMENT_CURL_OPTION_STRING(set_cookie, native::CURLOPT_COOKIE);
 		IMPLEMENT_CURL_OPTION_STRING(set_cookie_file, native::CURLOPT_COOKIEFILE);
 		IMPLEMENT_CURL_OPTION_STRING(set_cookie_jar, native::CURLOPT_COOKIEJAR);
@@ -311,9 +310,9 @@ namespace curl
 
 		IMPLEMENT_CURL_OPTION_STRING(set_mail_from, native::CURLOPT_MAIL_FROM);
 		void add_mail_rcpt(const std::string& mail_rcpt);
-		void add_mail_rcpt(const std::string& mail_rcpt, boost::system::error_code& ec);
+		void add_mail_rcpt(const std::string& mail_rcpt, std::error_code& ec);
 		void set_mail_rcpts(boost::shared_ptr<string_list> mail_rcpts);
-		void set_mail_rcpts(boost::shared_ptr<string_list> mail_rcpts, boost::system::error_code& ec);
+		void set_mail_rcpts(boost::shared_ptr<string_list> mail_rcpts, std::error_code& ec);
 #if LIBCURL_VERSION_NUM >= 0x072500
 		IMPLEMENT_CURL_OPTION_STRING(set_mail_auth, native::CURLOPT_MAIL_AUTH);
 #endif
@@ -326,9 +325,9 @@ namespace curl
 
 		IMPLEMENT_CURL_OPTION_STRING(set_ftp_port, native::CURLOPT_FTPPORT);
 		void add_quote(const std::string& quote);
-		void add_quote(const std::string& quote, boost::system::error_code& ec);
+		void add_quote(const std::string& quote, std::error_code& ec);
 		void set_quotes(boost::shared_ptr<string_list> quotes);
-		void set_quotes(boost::shared_ptr<string_list> quotes, boost::system::error_code& ec);
+		void set_quotes(boost::shared_ptr<string_list> quotes, std::error_code& ec);
 		/*void add_post_quote(const std::string& pre_quote);
 		void set_post_quotes(boost::shared_ptr<string_list> pre_quotes);
 		void add_pre_quote(const std::string& pre_quote);
@@ -412,9 +411,9 @@ namespace curl
 		enum use_ssl_t { use_ssl_none = native::CURLUSESSL_NONE, use_ssl_try = native::CURLUSESSL_TRY, use_ssl_control = native::CURLUSESSL_CONTROL, use_ssl_all = native::CURLUSESSL_ALL };
 		IMPLEMENT_CURL_OPTION_ENUM(set_use_ssl, native::CURLOPT_USE_SSL, use_ssl_t, long);
 		void add_resolve(const std::string& resolved_host);
-		void add_resolve(const std::string& resolved_host, boost::system::error_code& ec);
+		void add_resolve(const std::string& resolved_host, std::error_code& ec);
 		void set_resolves(boost::shared_ptr<string_list> resolved_hosts);
-		void set_resolves(boost::shared_ptr<string_list> resolved_hosts, boost::system::error_code& ec);
+		void set_resolves(boost::shared_ptr<string_list> resolved_hosts, std::error_code& ec);
 #if LIBCURL_VERSION_NUM >= 0x072400
 		IMPLEMENT_CURL_OPTION_STRING(set_dns_servers, native::CURLOPT_DNS_SERVERS);
 		IMPLEMENT_CURL_OPTION(set_accept_timeout_ms, native::CURLOPT_ACCEPTTIMEOUT_MS, long);
@@ -438,13 +437,13 @@ namespace curl
 		IMPLEMENT_CURL_OPTION_STRING(set_crl_file, native::CURLOPT_CRLFILE);
 		inline void set_ssl_verify_host(bool verify_host)
 		{
-			boost::system::error_code ec;
+			std::error_code ec;
 			set_ssl_verify_host(verify_host, ec);
-			boost::asio::detail::throw_error(ec);
+			asio::detail::throw_error(ec);
 		}
-		inline void set_ssl_verify_host(bool verify_host, boost::system::error_code& ec)
+		inline void set_ssl_verify_host(bool verify_host, std::error_code& ec)
 		{
-			ec = boost::system::error_code(curl_easy_setopt(handle_, native::CURLOPT_SSL_VERIFYHOST, verify_host ? 2L : 0L));
+			ec = std::error_code(curl_easy_setopt(handle_, native::CURLOPT_SSL_VERIFYHOST, verify_host ? 2L : 0L));
 		}
 		IMPLEMENT_CURL_OPTION_BOOLEAN(set_cert_info, native::CURLOPT_CERTINFO);
 		IMPLEMENT_CURL_OPTION_STRING(set_random_file, native::CURLOPT_RANDOM_FILE);
@@ -471,18 +470,18 @@ namespace curl
 
 		IMPLEMENT_CURL_OPTION(set_private, native::CURLOPT_PRIVATE, void*);
 		void set_share(boost::shared_ptr<share> share);
-		void set_share(boost::shared_ptr<share> share, boost::system::error_code& ec);
+		void set_share(boost::shared_ptr<share> share, std::error_code& ec);
 		IMPLEMENT_CURL_OPTION(set_new_file_perms, native::CURLOPT_NEW_FILE_PERMS, long);
 		IMPLEMENT_CURL_OPTION(set_new_directory_perms, native::CURLOPT_NEW_DIRECTORY_PERMS, long);
 
 		// telnet options
 
 		void add_telnet_option(const std::string& option, const std::string& value);
-		void add_telnet_option(const std::string& option, const std::string& value, boost::system::error_code& ec);
+		void add_telnet_option(const std::string& option, const std::string& value, std::error_code& ec);
 		void add_telnet_option(const std::string& telnet_option);
-		void add_telnet_option(const std::string& telnet_option, boost::system::error_code& ec);
+		void add_telnet_option(const std::string& telnet_option, std::error_code& ec);
 		void set_telnet_options(boost::shared_ptr<string_list> telnet_options);
-		void set_telnet_options(boost::shared_ptr<string_list> telnet_options, boost::system::error_code& ec);
+		void set_telnet_options(boost::shared_ptr<string_list> telnet_options, std::error_code& ec);
 
 		// getters
 
@@ -535,7 +534,7 @@ namespace curl
 			return (this < &other);
 		}
 
-		void handle_completion(const boost::system::error_code& err);
+		void handle_completion(const std::error_code& err);
 
 	private:
 		void init();
@@ -552,7 +551,7 @@ namespace curl
 		static native::curl_socket_t opensocket(void* clientp, native::curlsocktype purpose, struct native::curl_sockaddr* address);
 		static int closesocket(void* clientp, native::curl_socket_t item);
 
-		boost::asio::io_service& io_service_;
+		asio::io_service& io_service_;
 		initialization::ptr initref_;
 		native::CURL* handle_;
 		multi* multi_;

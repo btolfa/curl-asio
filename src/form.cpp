@@ -6,7 +6,7 @@
 	C++ wrapper for constructing libcurl forms
 */
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include <curl-asio/error_code.h>
 #include <curl-asio/form.h>
 
@@ -30,14 +30,14 @@ form::~form()
 
 void form::add_content(const std::string& key, const std::string& content)
 {
-	boost::system::error_code ec;
+	std::error_code ec;
 	add_content(key, content, ec);
-	boost::asio::detail::throw_error(ec, "add_content");
+	asio::detail::throw_error(ec, "add_content");
 }
 
-void form::add_content(const std::string& key, const std::string& content, boost::system::error_code& ec)
+void form::add_content(const std::string& key, const std::string& content, std::error_code& ec)
 {
-	ec = boost::system::error_code(native::curl_formadd(&post_, &last_,
+	ec = std::error_code(native::curl_formadd(&post_, &last_,
 		native::CURLFORM_COPYNAME, key.c_str(),
 		native::CURLFORM_NAMELENGTH, key.length(),
 		native::CURLFORM_COPYCONTENTS, content.c_str(),
@@ -48,14 +48,14 @@ void form::add_content(const std::string& key, const std::string& content, boost
 
 void form::add_content(const std::string& key, const std::string& content, const std::string& content_type)
 {
-	boost::system::error_code ec;
+	std::error_code ec;
 	add_content(key, content, content_type, ec);
-	boost::asio::detail::throw_error(ec, "add_content");
+	asio::detail::throw_error(ec, "add_content");
 }
 
-void form::add_content(const std::string& key, const std::string& content, const std::string& content_type, boost::system::error_code& ec)
+void form::add_content(const std::string& key, const std::string& content, const std::string& content_type, std::error_code& ec)
 {
-	ec = boost::system::error_code(native::curl_formadd(&post_, &last_,
+	ec = std::error_code(native::curl_formadd(&post_, &last_,
 		native::CURLFORM_COPYNAME, key.c_str(),
 		native::CURLFORM_NAMELENGTH, key.length(),
 		native::CURLFORM_COPYCONTENTS, content.c_str(),
@@ -67,14 +67,14 @@ void form::add_content(const std::string& key, const std::string& content, const
 
 void form::add_file(const std::string& key, const std::string& file_path)
 {
-	boost::system::error_code ec;
+	std::error_code ec;
 	add_file(key, file_path, ec);
-	boost::asio::detail::throw_error(ec, "add_file");
+	asio::detail::throw_error(ec, "add_file");
 }
 
-void form::add_file(const std::string& key, const std::string& file_path, boost::system::error_code& ec)
+void form::add_file(const std::string& key, const std::string& file_path, std::error_code& ec)
 {
-	ec = boost::system::error_code(native::curl_formadd(&post_, &last_,
+	ec = std::error_code(native::curl_formadd(&post_, &last_,
 		native::CURLFORM_COPYNAME, key.c_str(),
 		native::CURLFORM_NAMELENGTH, key.length(),
 		native::CURLFORM_FILE, file_path.c_str(),
@@ -84,14 +84,14 @@ void form::add_file(const std::string& key, const std::string& file_path, boost:
 
 void form::add_file(const std::string& key, const std::string& file_path, const std::string& content_type)
 {
-	boost::system::error_code ec;
+	std::error_code ec;
 	add_file(key, file_path, content_type, ec);
-	boost::asio::detail::throw_error(ec, "add_file");
+	asio::detail::throw_error(ec, "add_file");
 }
 
-void form::add_file(const std::string& key, const std::string& file_path, const std::string& content_type, boost::system::error_code& ec)
+void form::add_file(const std::string& key, const std::string& file_path, const std::string& content_type, std::error_code& ec)
 {
-	ec = boost::system::error_code(native::curl_formadd(&post_, &last_,
+	ec = std::error_code(native::curl_formadd(&post_, &last_,
 		native::CURLFORM_COPYNAME, key.c_str(),
 		native::CURLFORM_NAMELENGTH, key.length(),
 		native::CURLFORM_FILE, file_path.c_str(),
@@ -102,14 +102,14 @@ void form::add_file(const std::string& key, const std::string& file_path, const 
 
 void form::add_file_using_name(const std::string& key, const std::string& file_path, const std::string& file_name)
 {
-	boost::system::error_code ec;
+	std::error_code ec;
 	add_file_using_name(key, file_path, file_name, ec);
-	boost::asio::detail::throw_error(ec, "add_file_using_name");
+	asio::detail::throw_error(ec, "add_file_using_name");
 }
 
-void form::add_file_using_name(const std::string& key, const std::string& file_path, const std::string& file_name, boost::system::error_code& ec)
+void form::add_file_using_name(const std::string& key, const std::string& file_path, const std::string& file_name, std::error_code& ec)
 {
-	ec = boost::system::error_code(native::curl_formadd(&post_, &last_,
+	ec = std::error_code(native::curl_formadd(&post_, &last_,
 		native::CURLFORM_COPYNAME, key.c_str(),
 		native::CURLFORM_NAMELENGTH, key.length(),
 		native::CURLFORM_FILE, file_path.c_str(),
@@ -120,14 +120,14 @@ void form::add_file_using_name(const std::string& key, const std::string& file_p
 
 void form::add_file_using_name(const std::string& key, const std::string& file_path, const std::string& file_name, const std::string& content_type)
 {
-	boost::system::error_code ec;
+	std::error_code ec;
 	add_file_using_name(key, file_path, file_name, content_type, ec);
-	boost::asio::detail::throw_error(ec, "add_file_using_name");
+	asio::detail::throw_error(ec, "add_file_using_name");
 }
 
-void form::add_file_using_name(const std::string& key, const std::string& file_path, const std::string& file_name, const std::string& content_type, boost::system::error_code& ec)
+void form::add_file_using_name(const std::string& key, const std::string& file_path, const std::string& file_name, const std::string& content_type, std::error_code& ec)
 {
-	ec = boost::system::error_code(native::curl_formadd(&post_, &last_,
+	ec = std::error_code(native::curl_formadd(&post_, &last_,
 		native::CURLFORM_COPYNAME, key.c_str(),
 		native::CURLFORM_NAMELENGTH, key.length(),
 		native::CURLFORM_FILE, file_path.c_str(),
@@ -139,14 +139,14 @@ void form::add_file_using_name(const std::string& key, const std::string& file_p
 
 void form::add_file_content(const std::string& key, const std::string& file_path)
 {
-	boost::system::error_code ec;
+	std::error_code ec;
 	add_file_content(key, file_path, ec);
-	boost::asio::detail::throw_error(ec, "add_file_content");
+	asio::detail::throw_error(ec, "add_file_content");
 }
 
-void form::add_file_content(const std::string& key, const std::string& file_path, boost::system::error_code& ec)
+void form::add_file_content(const std::string& key, const std::string& file_path, std::error_code& ec)
 {
-	ec = boost::system::error_code(native::curl_formadd(&post_, &last_,
+	ec = std::error_code(native::curl_formadd(&post_, &last_,
 		native::CURLFORM_COPYNAME, key.c_str(),
 		native::CURLFORM_NAMELENGTH, key.length(),
 		native::CURLFORM_FILECONTENT, file_path.c_str(),
@@ -156,14 +156,14 @@ void form::add_file_content(const std::string& key, const std::string& file_path
 
 void form::add_file_content(const std::string& key, const std::string& file_path, const std::string& content_type)
 {
-	boost::system::error_code ec;
+	std::error_code ec;
 	add_file_content(key, file_path, content_type, ec);
-	boost::asio::detail::throw_error(ec, "add_file_content");
+	asio::detail::throw_error(ec, "add_file_content");
 }
 
-void form::add_file_content(const std::string& key, const std::string& file_path, const std::string& content_type, boost::system::error_code& ec)
+void form::add_file_content(const std::string& key, const std::string& file_path, const std::string& content_type, std::error_code& ec)
 {
-	ec = boost::system::error_code(native::curl_formadd(&post_, &last_,
+	ec = std::error_code(native::curl_formadd(&post_, &last_,
 		native::CURLFORM_COPYNAME, key.c_str(),
 		native::CURLFORM_NAMELENGTH, key.length(),
 		native::CURLFORM_FILECONTENT, file_path.c_str(),

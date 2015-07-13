@@ -6,7 +6,7 @@
 	C++ wrapper for libcurl's share interface
 */
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include <curl-asio/error_code.h>
 #include <curl-asio/share.h>
 
@@ -38,38 +38,38 @@ share::~share()
 
 void share::set_share_cookies(bool enabled)
 {
-	boost::system::error_code ec(native::curl_share_setopt(handle_, enabled ? native::CURLSHOPT_SHARE : native::CURLSHOPT_UNSHARE, native::CURL_LOCK_DATA_COOKIE));
-	boost::asio::detail::throw_error(ec);
+	std::error_code ec(native::curl_share_setopt(handle_, enabled ? native::CURLSHOPT_SHARE : native::CURLSHOPT_UNSHARE, native::CURL_LOCK_DATA_COOKIE));
+	asio::detail::throw_error(ec);
 }
 
 void share::set_share_dns(bool enabled)
 {
-	boost::system::error_code ec(native::curl_share_setopt(handle_, enabled ? native::CURLSHOPT_SHARE : native::CURLSHOPT_UNSHARE, native::CURL_LOCK_DATA_DNS));
-	boost::asio::detail::throw_error(ec);
+	std::error_code ec(native::curl_share_setopt(handle_, enabled ? native::CURLSHOPT_SHARE : native::CURLSHOPT_UNSHARE, native::CURL_LOCK_DATA_DNS));
+	asio::detail::throw_error(ec);
 }
 
 void share::set_share_ssl_session(bool enabled)
 {
-	boost::system::error_code ec(native::curl_share_setopt(handle_, enabled ? native::CURLSHOPT_SHARE : native::CURLSHOPT_UNSHARE, native::CURL_LOCK_DATA_SSL_SESSION));
-	boost::asio::detail::throw_error(ec);
+	std::error_code ec(native::curl_share_setopt(handle_, enabled ? native::CURLSHOPT_SHARE : native::CURLSHOPT_UNSHARE, native::CURL_LOCK_DATA_SSL_SESSION));
+	asio::detail::throw_error(ec);
 }
 
 void share::set_lock_function(lock_function_t lock_function)
 {
-	boost::system::error_code ec(native::curl_share_setopt(handle_, native::CURLSHOPT_LOCKFUNC, lock_function));
-	boost::asio::detail::throw_error(ec);
+	std::error_code ec(native::curl_share_setopt(handle_, native::CURLSHOPT_LOCKFUNC, lock_function));
+	asio::detail::throw_error(ec);
 }
 
 void share::set_unlock_function(unlock_function_t unlock_function)
 {
-	boost::system::error_code ec(native::curl_share_setopt(handle_, native::CURLSHOPT_UNLOCKFUNC, unlock_function));
-	boost::asio::detail::throw_error(ec);
+	std::error_code ec(native::curl_share_setopt(handle_, native::CURLSHOPT_UNLOCKFUNC, unlock_function));
+	asio::detail::throw_error(ec);
 }
 
 void share::set_user_data(void* user_data)
 {
-	boost::system::error_code ec(native::curl_share_setopt(handle_, native::CURLSHOPT_USERDATA, user_data));
-	boost::asio::detail::throw_error(ec);
+	std::error_code ec(native::curl_share_setopt(handle_, native::CURLSHOPT_USERDATA, user_data));
+	asio::detail::throw_error(ec);
 }
 
 void share::lock(native::CURL* handle, native::curl_lock_data data, native::curl_lock_access access, void* userptr)

@@ -9,10 +9,11 @@
 #pragma once
 
 #include "config.h"
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
+#include <map>
 #include <memory>
 #include <set>
 #include "initialization.h"
@@ -27,10 +28,10 @@ namespace curl
 		public boost::noncopyable
 	{
 	public:
-		multi(boost::asio::io_service& io_service);
+		multi(asio::io_service& io_service);
 		~multi();
 
-		inline boost::asio::io_service& get_io_service() { return io_service_; }
+		inline asio::io_service& get_io_service() { return io_service_; }
 		inline native::CURLM* native_handle() { return handle_; }
 
 		void add(easy* easy_handle);
@@ -61,12 +62,12 @@ namespace curl
 		bool still_running();
 
 		void start_read_op(socket_info_ptr si);
-		void handle_socket_read(const boost::system::error_code& err, socket_info_ptr si);
+		void handle_socket_read(const std::error_code& err, socket_info_ptr si);
 		void start_write_op(socket_info_ptr si);
-		void handle_socket_write(const boost::system::error_code& err, socket_info_ptr si);
-		void handle_timeout(const boost::system::error_code& err);
+		void handle_socket_write(const std::error_code& err, socket_info_ptr si);
+		void handle_timeout(const std::error_code& err);
 
-		typedef boost::asio::ip::tcp::socket socket_type;
+		typedef asio::ip::tcp::socket socket_type;
 		typedef std::map<socket_type::native_handle_type, socket_info_ptr> socket_map_type;
 		socket_map_type sockets_;
 		socket_info_ptr get_socket_from_native(native::curl_socket_t native_socket);
@@ -76,11 +77,11 @@ namespace curl
 
 		typedef std::set<easy*> easy_set_type;
 
-		boost::asio::io_service& io_service_;
+		asio::io_service& io_service_;
 		initialization::ptr initref_;
 		native::CURLM* handle_;
 		easy_set_type easy_handles_;
-		boost::asio::deadline_timer timeout_;
+		asio::steady_timer timeout_;
 		int still_running_;
 	};
 }
