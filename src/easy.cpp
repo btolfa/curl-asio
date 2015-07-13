@@ -526,7 +526,7 @@ native::curl_socket_t easy::open_tcp_socket(native::curl_sockaddr* address)
 	}
 	else
 	{
-		boost::shared_ptr<socket_info> si(new socket_info(this, std::move(socket)));
+		auto si = boost::make_shared<socket_info>(this, std::move(socket));
 		multi_->socket_register(si);
 		return si->socket->native_handle();
 	}
