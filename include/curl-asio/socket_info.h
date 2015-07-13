@@ -19,9 +19,9 @@ namespace curl
 
 	struct socket_info : public boost::enable_shared_from_this<socket_info>
 	{
-		socket_info(easy* _handle, std::auto_ptr<socket_type> _socket):
+		socket_info(easy* _handle, std::unique_ptr<socket_type> _socket):
 			handle(_handle),
-			socket(_socket),
+			socket(std::move(_socket)),
 			pending_read_op(false),
 			pending_write_op(false),
 			monitor_read(false),
@@ -30,7 +30,7 @@ namespace curl
 		}
 		
 		easy* handle;
-		boost::scoped_ptr<socket_type> socket;
+		std::unique_ptr<socket_type> socket;
 		bool pending_read_op;
 		bool pending_write_op;
 		bool monitor_read;

@@ -504,7 +504,7 @@ void easy::init()
 native::curl_socket_t easy::open_tcp_socket(native::curl_sockaddr* address)
 {
 	std::error_code ec;
-	std::auto_ptr<socket_type> socket(new socket_type(io_service_));
+	auto socket = std::make_unique<socket_type>(io_service_);
 
 	switch (address->family)
 	{
@@ -526,7 +526,7 @@ native::curl_socket_t easy::open_tcp_socket(native::curl_sockaddr* address)
 	}
 	else
 	{
-		boost::shared_ptr<socket_info> si(new socket_info(this, socket));
+		boost::shared_ptr<socket_info> si(new socket_info(this, std::move(socket)));
 		multi_->socket_register(si);
 		return si->socket->native_handle();
 	}

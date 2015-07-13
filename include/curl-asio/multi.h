@@ -10,7 +10,6 @@
 
 #include "config.h"
 #include <asio.hpp>
-#include <boost/function.hpp>
 #include <boost/shared_ptr.hpp>
 #include <map>
 #include <memory>

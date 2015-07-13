@@ -8,7 +8,7 @@
 
 boost::ptr_set<curl::easy> active_downloads;
 
-void handle_download_completed(const std::error_code& err, std::string url, curl::easy* easy)
+void handle_download_completed(const std::error_code& err, std::string url, const std::shared_ptr<curl::easy> &easy)
 {
 	if (!err)
 	{
@@ -24,7 +24,7 @@ void handle_download_completed(const std::error_code& err, std::string url, curl
 
 void start_download(curl::multi& multi, const std::string& url)
 {
-	std::auto_ptr<curl::easy> easy(new curl::easy(multi));
+	auto easy = std::make_shared<curl::easy>(multi);
 	
 	// see 'Use server-provided file names' example for a more detailed implementation of this function which receives
 	// the target file name from the server using libcurl's header callbacks
@@ -32,11 +32,11 @@ void start_download(curl::multi& multi, const std::string& url)
 	
 	easy->set_url(url);
 	easy->set_sink(boost::make_shared<std::ofstream>(file_name.c_str(), std::ios::binary));
-	easy->async_perform([url, easy = easy.get()](const std::error_code& err){
+	easy->async_perform([url, easy](const std::error_code& err){
 		handle_download_completed(err, url, easy);
 	});
 
-	active_downloads.insert(easy);
+	active_downloads.insert(easy.get());
 }
 
 int main(int argc, char* argv[])
