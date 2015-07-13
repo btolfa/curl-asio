@@ -10,13 +10,14 @@
 
 #include "config.h"
 #include <asio.hpp>
-#include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/preprocessor/stringize.hpp>
 #include <boost/shared_ptr.hpp>
 #include <iostream>
 #include <memory>
 #include <string>
+#include <functional>
+
 #include "error_code.h"
 #include "initialization.h"
 
@@ -133,7 +134,7 @@ namespace curl
 		public boost::noncopyable
 	{
 	public:
-		typedef boost::function<void(const std::error_code& err)> handler_type;
+		using handler_type = std::function<void(const std::error_code& err)>;
 
 		static easy* from_native(native::CURL* native_easy);
 
@@ -152,7 +153,7 @@ namespace curl
 		void set_sink(boost::shared_ptr<std::ostream> sink);
 		void set_sink(boost::shared_ptr<std::ostream> sink, std::error_code& ec);
 
-		typedef boost::function<bool(native::curl_off_t dltotal, native::curl_off_t dlnow, native::curl_off_t ultotal, native::curl_off_t ulnow)> progress_callback_t;
+		using progress_callback_t = std::function<bool(native::curl_off_t dltotal, native::curl_off_t dlnow, native::curl_off_t ultotal, native::curl_off_t ulnow)>;
 		void unset_progress_callback();
 		void set_progress_callback(progress_callback_t progress_callback);
 
