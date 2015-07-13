@@ -8,7 +8,6 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/thread.hpp>
-#include <boost/weak_ptr.hpp>
 #include <curl-asio/initialization.h>
 #include <curl-asio/native.h>
 

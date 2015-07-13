@@ -10,7 +10,6 @@
 
 #include "config.h"
 #include <asio.hpp>
-#include <boost/noncopyable.hpp>
 #include <boost/preprocessor/stringize.hpp>
 #include <boost/shared_ptr.hpp>
 #include <iostream>
@@ -130,8 +129,7 @@ namespace curl
 	class share;
 	class string_list;
 
-	class CURLASIO_API easy:
-		public boost::noncopyable
+	class CURLASIO_API easy
 	{
 	public:
 		using handler_type = std::function<void(const std::error_code& err)>;
@@ -141,6 +139,9 @@ namespace curl
 		easy(asio::io_service& io_service);
 		easy(multi& multi_handle);
 		~easy();
+
+		easy(const easy&) = delete;
+		easy& operator= (const easy&) = delete;
 
 		inline native::CURL* native_handle() { return handle_; }
 

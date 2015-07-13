@@ -11,7 +11,6 @@
 #include "config.h"
 #include <asio.hpp>
 #include <boost/function.hpp>
-#include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 #include <map>
 #include <memory>
@@ -24,12 +23,14 @@ namespace curl
 {
 	class easy;
 
-	class CURLASIO_API multi:
-		public boost::noncopyable
+	class CURLASIO_API multi
 	{
 	public:
 		multi(asio::io_service& io_service);
 		~multi();
+
+		multi(const multi&) = delete;
+		multi & operator=(const multi&) = delete;
 
 		inline asio::io_service& get_io_service() { return io_service_; }
 		inline native::CURLM* native_handle() { return handle_; }

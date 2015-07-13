@@ -10,7 +10,6 @@
 
 #include "config.h"
 #include <boost/enable_shared_from_this.hpp>
-#include <boost/noncopyable.hpp>
 #include <mutex>
 #include "initialization.h"
 #include "native.h"
@@ -18,12 +17,14 @@
 namespace curl
 {
 	class CURLASIO_API share:
-		public boost::enable_shared_from_this<share>,
-		public boost::noncopyable
+		public boost::enable_shared_from_this<share>
 	{
 	public:
 		share();
 		~share();
+
+		share(const share&) = delete;
+		share& operator=(const share&) = delete;
 
 		inline native::CURLSH* native_handle() { return handle_; }
 		void set_share_cookies(bool enabled);
