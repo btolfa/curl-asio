@@ -66,7 +66,7 @@ void multi::remove(easy* easy_handle)
 	}
 }
 
-void multi::socket_register(boost::shared_ptr<socket_info> si)
+void multi::socket_register(std::shared_ptr<socket_info> si)
 {
 	socket_type::native_handle_type fd = si->socket->native_handle();
 	sockets_.insert(socket_map_type::value_type(fd, si));

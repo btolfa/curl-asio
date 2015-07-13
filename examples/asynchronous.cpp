@@ -1,14 +1,9 @@
 #include <curl-asio.h>
-#include <boost/bind.hpp>
-#include <boost/make_shared.hpp>
-#include <boost/ptr_container/ptr_set.hpp>
 #include <iostream>
 #include <fstream>
 #include <memory> // for std::auto_ptr
 
-boost::ptr_set<curl::easy> active_downloads;
-
-void handle_download_completed(const std::error_code& err, std::string url, const std::shared_ptr<curl::easy> &easy)
+void handle_download_completed(const std::error_code& err, std::string url, std::shared_ptr<curl::easy> easy)
 {
 	if (!err)
 	{
@@ -19,7 +14,6 @@ void handle_download_completed(const std::error_code& err, std::string url, cons
 		std::cout << "Download of " << url << " failed: " << err.message() << std::endl;
 	}
 	
-	active_downloads.erase(*easy);
 }
 
 void start_download(curl::multi& multi, const std::string& url)
@@ -31,12 +25,10 @@ void start_download(curl::multi& multi, const std::string& url)
 	std::string file_name = url.substr(url.find_last_of('/') + 1);
 	
 	easy->set_url(url);
-	easy->set_sink(boost::make_shared<std::ofstream>(file_name.c_str(), std::ios::binary));
+	easy->set_sink(std::make_shared<std::ofstream>(file_name.c_str(), std::ios::binary));
 	easy->async_perform([url, easy](const std::error_code& err){
 		handle_download_completed(err, url, easy);
 	});
-
-	active_downloads.insert(easy.get());
 }
 
 int main(int argc, char* argv[])

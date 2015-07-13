@@ -72,7 +72,7 @@ void easy::perform(std::error_code& ec)
 	}
 }
 
-void easy::async_perform(handler_type handler)
+void easy::async_perform(handler_type && handler)
 {
 	if (!multi_)
 	{
@@ -90,7 +90,7 @@ void easy::async_perform(handler_type handler)
 	set_closesocket_function(&easy::closesocket);
 	set_closesocket_data(multi_);
 
-	handler_ = handler;
+	handler_ = std::move(handler);
 	multi_registered_ = true;
 
 	// Registering the easy handle with the multi handle might invoke a set of callbacks right away which cause the completion event to fire from within this function.
@@ -106,14 +106,14 @@ void easy::cancel()
 	}
 }
 
-void easy::set_source(boost::shared_ptr<std::istream> source)
+void easy::set_source(std::shared_ptr<std::istream> source)
 {
 	std::error_code ec;
 	set_source(source, ec);
 	asio::detail::throw_error(ec, "set_source");
 }
 
-void easy::set_source(boost::shared_ptr<std::istream> source, std::error_code& ec)
+void easy::set_source(std::shared_ptr<std::istream> source, std::error_code& ec)
 {
 	source_ = source;
 	set_read_function(&easy::read_function, ec);
@@ -122,14 +122,14 @@ void easy::set_source(boost::shared_ptr<std::istream> source, std::error_code& e
 	if (!ec) set_seek_data(this, ec);
 }
 
-void easy::set_sink(boost::shared_ptr<std::ostream> sink)
+void easy::set_sink(std::shared_ptr<std::ostream> sink)
 {
 	std::error_code ec;
 	set_sink(sink, ec);
 	asio::detail::throw_error(ec, "set_sink");
 }
 
-void easy::set_sink(boost::shared_ptr<std::ostream> sink, std::error_code& ec)
+void easy::set_sink(std::shared_ptr<std::ostream> sink, std::error_code& ec)
 {
 	sink_ = sink;
 	set_write_function(&easy::write_function);
@@ -148,9 +148,9 @@ void easy::unset_progress_callback()
 #endif
 }
 
-void easy::set_progress_callback(progress_callback_t progress_callback)
+void easy::set_progress_callback(progress_callback_t && progress_callback)
 {
-	progress_callback_ = progress_callback;
+	progress_callback_ = std::move(progress_callback);
 	set_no_progress(false);
 #if LIBCURL_VERSION_NUM < 0x072000
 	set_progress_function(&easy::progress_function);
@@ -177,14 +177,14 @@ void easy::set_post_fields(const std::string& post_fields, std::error_code& ec)
 		set_post_field_size_large(static_cast<native::curl_off_t>(post_fields_.length()), ec);
 }
 
-void easy::set_http_post(boost::shared_ptr<form> form)
+void easy::set_http_post(std::shared_ptr<form> form)
 {
 	std::error_code ec;
 	set_http_post(form, ec);
 	asio::detail::throw_error(ec, "set_http_post");
 }
 
-void easy::set_http_post(boost::shared_ptr<form> form, std::error_code& ec)
+void easy::set_http_post(std::shared_ptr<form> form, std::error_code& ec)
 {
 	form_ = form;
 
@@ -221,21 +221,21 @@ void easy::add_header(const std::string& header, std::error_code& ec)
 {
 	if (!headers_)
 	{
-		headers_ = boost::make_shared<string_list>();
+		headers_ = std::make_shared<string_list>();
 	}
 
 	headers_->add(header);
 	ec = std::error_code(native::curl_easy_setopt(handle_, native::CURLOPT_HTTPHEADER, headers_->native_handle()));
 }
 
-void easy::set_headers(boost::shared_ptr<string_list> headers)
+void easy::set_headers(std::shared_ptr<string_list> headers)
 {
 	std::error_code ec;
 	set_headers(headers, ec);
 	asio::detail::throw_error(ec, "set_headers");
 }
 
-void easy::set_headers(boost::shared_ptr<string_list> headers, std::error_code& ec)
+void easy::set_headers(std::shared_ptr<string_list> headers, std::error_code& ec)
 {
 	headers_ = headers;
 
@@ -260,21 +260,21 @@ void easy::add_http200_alias(const std::string& http200_alias, std::error_code& 
 {
 	if (!http200_aliases_)
 	{
-		http200_aliases_ = boost::make_shared<string_list>();
+		http200_aliases_ = std::make_shared<string_list>();
 	}
 
 	http200_aliases_->add(http200_alias);
 	ec = std::error_code(native::curl_easy_setopt(handle_, native::CURLOPT_HTTP200ALIASES, http200_aliases_->native_handle()));
 }
 
-void easy::set_http200_aliases(boost::shared_ptr<string_list> http200_aliases)
+void easy::set_http200_aliases(std::shared_ptr<string_list> http200_aliases)
 {
 	std::error_code ec;
 	set_http200_aliases(http200_aliases, ec);
 	asio::detail::throw_error(ec, "set_http200_aliases");
 }
 
-void easy::set_http200_aliases(boost::shared_ptr<string_list> http200_aliases, std::error_code& ec)
+void easy::set_http200_aliases(std::shared_ptr<string_list> http200_aliases, std::error_code& ec)
 {
 	http200_aliases_ = http200_aliases;
 
@@ -299,21 +299,21 @@ void easy::add_mail_rcpt(const std::string& mail_rcpt, std::error_code& ec)
 {
 	if (!mail_rcpts_)
 	{
-		mail_rcpts_ = boost::make_shared<string_list>();
+		mail_rcpts_ = std::make_shared<string_list>();
 	}
 
 	mail_rcpts_->add(mail_rcpt);
 	ec = std::error_code(native::curl_easy_setopt(handle_, native::CURLOPT_MAIL_RCPT, mail_rcpts_->native_handle()));
 }
 
-void easy::set_mail_rcpts(boost::shared_ptr<string_list> mail_rcpts)
+void easy::set_mail_rcpts(std::shared_ptr<string_list> mail_rcpts)
 {
 	std::error_code ec;
 	set_mail_rcpts(mail_rcpts, ec);
 	asio::detail::throw_error(ec, "set_mail_rcpts");
 }
 
-void easy::set_mail_rcpts(boost::shared_ptr<string_list> mail_rcpts, std::error_code& ec)
+void easy::set_mail_rcpts(std::shared_ptr<string_list> mail_rcpts, std::error_code& ec)
 {
 	mail_rcpts_ = mail_rcpts;
 
@@ -338,21 +338,21 @@ void easy::add_quote(const std::string& quote, std::error_code& ec)
 {
 	if (!quotes_)
 	{
-		quotes_ = boost::make_shared<string_list>();
+		quotes_ = std::make_shared<string_list>();
 	}
 
 	quotes_->add(quote);
 	ec = std::error_code(native::curl_easy_setopt(handle_, native::CURLOPT_QUOTE, quotes_->native_handle()));
 }
 
-void easy::set_quotes(boost::shared_ptr<string_list> quotes)
+void easy::set_quotes(std::shared_ptr<string_list> quotes)
 {
 	std::error_code ec;
 	set_quotes(quotes, ec);
 	asio::detail::throw_error(ec, "set_quotes");
 }
 
-void easy::set_quotes(boost::shared_ptr<string_list> quotes, std::error_code& ec)
+void easy::set_quotes(std::shared_ptr<string_list> quotes, std::error_code& ec)
 {
 	quotes_ = quotes;
 
@@ -377,21 +377,21 @@ void easy::add_resolve(const std::string& resolved_host, std::error_code& ec)
 {
 	if (!resolved_hosts_)
 	{
-		resolved_hosts_ = boost::make_shared<string_list>();
+		resolved_hosts_ = std::make_shared<string_list>();
 	}
 
 	resolved_hosts_->add(resolved_host);
 	ec = std::error_code(native::curl_easy_setopt(handle_, native::CURLOPT_RESOLVE, resolved_hosts_->native_handle()));
 }
 
-void easy::set_resolves(boost::shared_ptr<string_list> resolved_hosts)
+void easy::set_resolves(std::shared_ptr<string_list> resolved_hosts)
 {
 	std::error_code ec;
 	set_resolves(resolved_hosts, ec);
 	asio::detail::throw_error(ec, "set_resolves");
 }
 
-void easy::set_resolves(boost::shared_ptr<string_list> resolved_hosts, std::error_code& ec)
+void easy::set_resolves(std::shared_ptr<string_list> resolved_hosts, std::error_code& ec)
 {
 	resolved_hosts_ = resolved_hosts;
 
@@ -405,14 +405,14 @@ void easy::set_resolves(boost::shared_ptr<string_list> resolved_hosts, std::erro
 	}
 }
 
-void easy::set_share(boost::shared_ptr<share> share)
+void easy::set_share(std::shared_ptr<share> share)
 {
 	std::error_code ec;
 	set_share(share, ec);
 	asio::detail::throw_error(ec, "set_share");
 }
 
-void easy::set_share(boost::shared_ptr<share> share, std::error_code& ec)
+void easy::set_share(std::shared_ptr<share> share, std::error_code& ec)
 {
 	share_ = share;
 
@@ -437,7 +437,7 @@ void easy::add_telnet_option(const std::string& telnet_option, std::error_code& 
 {
 	if (!telnet_options_)
 	{
-		telnet_options_ = boost::make_shared<string_list>();
+		telnet_options_ = std::make_shared<string_list>();
 	}
 
 	telnet_options_->add(telnet_option);
@@ -456,14 +456,14 @@ void easy::add_telnet_option(const std::string& option, const std::string& value
 	add_telnet_option(option + "=" + value, ec);
 }
 
-void easy::set_telnet_options(boost::shared_ptr<string_list> telnet_options)
+void easy::set_telnet_options(std::shared_ptr<string_list> telnet_options)
 {
 	std::error_code ec;
 	set_telnet_options(telnet_options, ec);
 	asio::detail::throw_error(ec, "set_telnet_options");
 }
 
-void easy::set_telnet_options(boost::shared_ptr<string_list> telnet_options, std::error_code& ec)
+void easy::set_telnet_options(std::shared_ptr<string_list> telnet_options, std::error_code& ec)
 {
 	telnet_options_ = telnet_options;
 
@@ -526,7 +526,7 @@ native::curl_socket_t easy::open_tcp_socket(native::curl_sockaddr* address)
 	}
 	else
 	{
-		auto si = boost::make_shared<socket_info>(this, std::move(socket));
+		auto si = std::make_shared<socket_info>(this, std::move(socket));
 		multi_->socket_register(si);
 		return si->socket->native_handle();
 	}

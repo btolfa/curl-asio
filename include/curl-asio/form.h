@@ -9,7 +9,6 @@
 #pragma once
 
 #include "config.h"
-#include <boost/enable_shared_from_this.hpp>
 #include <string>
 #include "initialization.h"
 #include "native.h"
@@ -17,7 +16,7 @@
 namespace curl
 {
 	class CURLASIO_API form:
-		public boost::enable_shared_from_this<form>
+		public std::enable_shared_from_this<form>
 	{
 	public:
 		form();

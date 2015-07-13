@@ -9,14 +9,13 @@
 #pragma once
 
 #include "config.h"
-#include <boost/shared_ptr.hpp>
 
 namespace curl
 {
 	class initialization
 	{
 	public:
-		using ptr = boost::shared_ptr<initialization>;
+		using ptr = std::shared_ptr<initialization>;
 		static ptr ensure_initialization();
 		~initialization();
 	protected:

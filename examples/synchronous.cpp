@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 	
 	// set the object's properties
 	downloader.set_url(url);
-	downloader.set_sink(boost::make_shared<std::ofstream>(file_name, std::ios::binary));
+	downloader.set_sink(std::make_shared<std::ofstream>(file_name, std::ios::binary));
 	
 	// download the file
 	std::error_code ec;
