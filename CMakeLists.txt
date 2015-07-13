@@ -14,6 +14,7 @@ LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 OPTION(BUILD_STATIC "Build the static library" ON)
 OPTION(BUILD_SHARED "Build the shared library" OFF)
 OPTION(BUILD_EXAMPLES "Build the examples" ON)
+# OPTION(BUILD_ASIO_STANDALONE "Build with standalone asio" ON)
 
 IF(NOT MSVC)
 	OPTION(ENABLE_CPP11 "Enable features and examples which require C++11" ON)
@@ -56,6 +57,9 @@ ENDIF()
 # Find dependencies
 FIND_PACKAGE(CURLASIO-CURL REQUIRED)
 FIND_PACKAGE(Boost REQUIRED COMPONENTS chrono date_time system thread)
+
+find_package(Asio REQUIRED)
+add_definitions(-DASIO_STANDALONE -DASIO_NO_DEPRECATED)
 
 # Move along
 ADD_SUBDIRECTORY(src)

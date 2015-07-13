@@ -8,6 +8,7 @@ INCLUDE_DIRECTORIES(
 	${CURLASIO_INCLUDE_DIR}
 	${CURL_INCLUDE_DIR}
 	${Boost_INCLUDE_DIRS}
+	${ASIO_INCLUDE_DIRS}
 	)
 
 # Collect all source files
