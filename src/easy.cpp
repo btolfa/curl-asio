@@ -105,14 +105,14 @@ void easy::cancel()
 	}
 }
 
-void easy::set_source(std::shared_ptr<std::istream> source)
+void easy::set_source(std::shared_ptr<std::istream> const& source)
 {
 	std::error_code ec;
 	set_source(source, ec);
 	asio::detail::throw_error(ec, "set_source");
 }
 
-void easy::set_source(std::shared_ptr<std::istream> source, std::error_code& ec)
+void easy::set_source(std::shared_ptr<std::istream> const& source, std::error_code& ec)
 {
 	source_ = source;
 	set_read_function(&easy::read_function, ec);
@@ -121,14 +121,14 @@ void easy::set_source(std::shared_ptr<std::istream> source, std::error_code& ec)
 	if (!ec) set_seek_data(this, ec);
 }
 
-void easy::set_sink(std::shared_ptr<std::ostream> sink)
+void easy::set_sink(std::shared_ptr<std::ostream> const& sink)
 {
 	std::error_code ec;
 	set_sink(sink, ec);
 	asio::detail::throw_error(ec, "set_sink");
 }
 
-void easy::set_sink(std::shared_ptr<std::ostream> sink, std::error_code& ec)
+void easy::set_sink(std::shared_ptr<std::ostream> const& sink, std::error_code& ec)
 {
 	sink_ = sink;
 	set_write_function(&easy::write_function);
@@ -176,14 +176,14 @@ void easy::set_post_fields(const std::string& post_fields, std::error_code& ec)
 		set_post_field_size_large(static_cast<native::curl_off_t>(post_fields_.length()), ec);
 }
 
-void easy::set_http_post(std::shared_ptr<form> form)
+void easy::set_http_post(std::shared_ptr<form> const& form)
 {
 	std::error_code ec;
 	set_http_post(form, ec);
 	asio::detail::throw_error(ec, "set_http_post");
 }
 
-void easy::set_http_post(std::shared_ptr<form> form, std::error_code& ec)
+void easy::set_http_post(std::shared_ptr<form> const& form, std::error_code& ec)
 {
 	form_ = form;
 
@@ -227,14 +227,14 @@ void easy::add_header(const std::string& header, std::error_code& ec)
 	ec = std::error_code(native::curl_easy_setopt(handle_, native::CURLOPT_HTTPHEADER, headers_->native_handle()));
 }
 
-void easy::set_headers(std::shared_ptr<string_list> headers)
+void easy::set_headers(std::shared_ptr<string_list> const& headers)
 {
 	std::error_code ec;
 	set_headers(headers, ec);
 	asio::detail::throw_error(ec, "set_headers");
 }
 
-void easy::set_headers(std::shared_ptr<string_list> headers, std::error_code& ec)
+void easy::set_headers(std::shared_ptr<string_list> const& headers, std::error_code& ec)
 {
 	headers_ = headers;
 
@@ -266,14 +266,14 @@ void easy::add_http200_alias(const std::string& http200_alias, std::error_code& 
 	ec = std::error_code(native::curl_easy_setopt(handle_, native::CURLOPT_HTTP200ALIASES, http200_aliases_->native_handle()));
 }
 
-void easy::set_http200_aliases(std::shared_ptr<string_list> http200_aliases)
+void easy::set_http200_aliases(std::shared_ptr<string_list> const& http200_aliases)
 {
 	std::error_code ec;
 	set_http200_aliases(http200_aliases, ec);
 	asio::detail::throw_error(ec, "set_http200_aliases");
 }
 
-void easy::set_http200_aliases(std::shared_ptr<string_list> http200_aliases, std::error_code& ec)
+void easy::set_http200_aliases(std::shared_ptr<string_list> const& http200_aliases, std::error_code& ec)
 {
 	http200_aliases_ = http200_aliases;
 
@@ -305,14 +305,14 @@ void easy::add_mail_rcpt(const std::string& mail_rcpt, std::error_code& ec)
 	ec = std::error_code(native::curl_easy_setopt(handle_, native::CURLOPT_MAIL_RCPT, mail_rcpts_->native_handle()));
 }
 
-void easy::set_mail_rcpts(std::shared_ptr<string_list> mail_rcpts)
+void easy::set_mail_rcpts(std::shared_ptr<string_list> const& mail_rcpts)
 {
 	std::error_code ec;
 	set_mail_rcpts(mail_rcpts, ec);
 	asio::detail::throw_error(ec, "set_mail_rcpts");
 }
 
-void easy::set_mail_rcpts(std::shared_ptr<string_list> mail_rcpts, std::error_code& ec)
+void easy::set_mail_rcpts(std::shared_ptr<string_list> const& mail_rcpts, std::error_code& ec)
 {
 	mail_rcpts_ = mail_rcpts;
 
@@ -344,14 +344,14 @@ void easy::add_quote(const std::string& quote, std::error_code& ec)
 	ec = std::error_code(native::curl_easy_setopt(handle_, native::CURLOPT_QUOTE, quotes_->native_handle()));
 }
 
-void easy::set_quotes(std::shared_ptr<string_list> quotes)
+void easy::set_quotes(std::shared_ptr<string_list> const& quotes)
 {
 	std::error_code ec;
 	set_quotes(quotes, ec);
 	asio::detail::throw_error(ec, "set_quotes");
 }
 
-void easy::set_quotes(std::shared_ptr<string_list> quotes, std::error_code& ec)
+void easy::set_quotes(std::shared_ptr<string_list> const& quotes, std::error_code& ec)
 {
 	quotes_ = quotes;
 
@@ -383,14 +383,14 @@ void easy::add_resolve(const std::string& resolved_host, std::error_code& ec)
 	ec = std::error_code(native::curl_easy_setopt(handle_, native::CURLOPT_RESOLVE, resolved_hosts_->native_handle()));
 }
 
-void easy::set_resolves(std::shared_ptr<string_list> resolved_hosts)
+void easy::set_resolves(std::shared_ptr<string_list> const& resolved_hosts)
 {
 	std::error_code ec;
 	set_resolves(resolved_hosts, ec);
 	asio::detail::throw_error(ec, "set_resolves");
 }
 
-void easy::set_resolves(std::shared_ptr<string_list> resolved_hosts, std::error_code& ec)
+void easy::set_resolves(std::shared_ptr<string_list> const& resolved_hosts, std::error_code& ec)
 {
 	resolved_hosts_ = resolved_hosts;
 
@@ -404,14 +404,14 @@ void easy::set_resolves(std::shared_ptr<string_list> resolved_hosts, std::error_
 	}
 }
 
-void easy::set_share(std::shared_ptr<share> share)
+void easy::set_share(std::shared_ptr<share> const& share)
 {
 	std::error_code ec;
 	set_share(share, ec);
 	asio::detail::throw_error(ec, "set_share");
 }
 
-void easy::set_share(std::shared_ptr<share> share, std::error_code& ec)
+void easy::set_share(std::shared_ptr<share> const& share, std::error_code& ec)
 {
 	share_ = share;
 
@@ -455,14 +455,14 @@ void easy::add_telnet_option(const std::string& option, const std::string& value
 	add_telnet_option(option + "=" + value, ec);
 }
 
-void easy::set_telnet_options(std::shared_ptr<string_list> telnet_options)
+void easy::set_telnet_options(std::shared_ptr<string_list> const& telnet_options)
 {
 	std::error_code ec;
 	set_telnet_options(telnet_options, ec);
 	asio::detail::throw_error(ec, "set_telnet_options");
 }
 
-void easy::set_telnet_options(std::shared_ptr<string_list> telnet_options, std::error_code& ec)
+void easy::set_telnet_options(std::shared_ptr<string_list> const& telnet_options, std::error_code& ec)
 {
 	telnet_options_ = telnet_options;
 

@@ -66,7 +66,7 @@ void multi::remove(easy* easy_handle)
 	}
 }
 
-void multi::socket_register(std::shared_ptr<socket_info> si)
+void multi::socket_register(std::shared_ptr<socket_info> const& si)
 {
 	socket_type::native_handle_type fd = si->socket->native_handle();
 	sockets_.insert(socket_map_type::value_type(fd, si));
@@ -138,7 +138,7 @@ void multi::set_timer_data(void* timer_data)
 	asio::detail::throw_error(ec, "set_timer_data");
 }
 
-void multi::monitor_socket(socket_info_ptr si, int action)
+void multi::monitor_socket(socket_info_ptr const& si, int action)
 {
 	si->monitor_read = !!(action & CURL_POLL_IN);
 	si->monitor_write = !!(action & CURL_POLL_OUT);
@@ -199,7 +199,7 @@ bool multi::still_running()
 	return (still_running_ > 0);
 }
 
-void multi::start_read_op(socket_info_ptr si)
+void multi::start_read_op(socket_info_ptr const& si)
 {
 	si->pending_read_op = true;
 	si->socket->async_read_some(asio::null_buffers(), [this, si](const asio::error_code& ec, std::size_t){
@@ -207,7 +207,7 @@ void multi::start_read_op(socket_info_ptr si)
 	});
 }
 
-void multi::handle_socket_read(const std::error_code& err, socket_info_ptr si)
+void multi::handle_socket_read(const std::error_code& err, socket_info_ptr const& si)
 {
     if (!si->socket)
     {
@@ -237,13 +237,13 @@ void multi::handle_socket_read(const std::error_code& err, socket_info_ptr si)
 	}
 }
 
-void multi::start_write_op(socket_info_ptr si)
+void multi::start_write_op(socket_info_ptr const& si)
 {
 	si->pending_write_op = true;
 	si->socket->async_write_some(asio::null_buffers(), [this, si](const asio::error_code & ec, std::size_t){handle_socket_write(ec, si);});
 }
 
-void multi::handle_socket_write(const std::error_code& err, socket_info_ptr si)
+void multi::handle_socket_write(const std::error_code& err, socket_info_ptr const& si)
 {
     if (!si->socket)
     {

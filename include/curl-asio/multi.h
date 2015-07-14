@@ -36,7 +36,7 @@ namespace curl
 		void add(easy* easy_handle);
 		void remove(easy* easy_handle);
 
-		void socket_register(std::shared_ptr<socket_info> si);
+		void socket_register(std::shared_ptr<socket_info> const& si);
 		void socket_cleanup(native::curl_socket_t s);
 
 	private:
@@ -56,14 +56,14 @@ namespace curl
 		void set_timer_function(timer_function_t timer_function);
 		void set_timer_data(void* timer_data);
 
-		void monitor_socket(socket_info_ptr si, int action);
+		void monitor_socket(socket_info_ptr const& si, int action);
 		void process_messages();
 		bool still_running();
 
-		void start_read_op(socket_info_ptr si);
-		void handle_socket_read(const std::error_code& err, socket_info_ptr si);
-		void start_write_op(socket_info_ptr si);
-		void handle_socket_write(const std::error_code& err, socket_info_ptr si);
+		void start_read_op(socket_info_ptr const& si);
+		void handle_socket_read(const std::error_code& err, socket_info_ptr const& si);
+		void start_write_op(socket_info_ptr const& si);
+		void handle_socket_write(const std::error_code& err, socket_info_ptr const& si);
 		void handle_timeout(const std::error_code& err);
 
 		typedef asio::ip::tcp::socket socket_type;
