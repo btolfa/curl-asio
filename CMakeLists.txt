@@ -1,6 +1,14 @@
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.0 FATAL_ERROR)
 
-project(curl-asio)
+project(curl-asio CXX)
+
+# Append the path to the custom cmake modules from this project to the CMAKE_MODULE_PATH
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
+
+find_package(Boost)
+find_package(Asio REQUIRED)
+find_package(CURLASIO-CURL REQUIRED)
 
 set(HEADERS
     include/curl-asio/config.h
@@ -27,7 +35,15 @@ set(SOURCES
     ${HEADERS}
 )
 
-include_directories(include)
+include_directories(include
+        ${ASIO_INCLUDE_DIRS}
+        ${Boost_INCLUDE_DIRS}
+        ${CURL_INCLUDE_DIR})
 
-add_library(${PROJECT_NAME} STATIC ${SOURCES})
-target_link_libraries(${PROJECT_NAME} ${CURL_LIBRARIES})
+add_library(curl-asio STATIC ${SOURCES})
+target_link_libraries(curl-asio
+        ${CURL_LIBRARIES}
+        asio::asio
+        )
+
+set_property(TARGET curl-asio PROPERTY CXX_STANDARD 14)
