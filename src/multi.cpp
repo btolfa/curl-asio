@@ -6,7 +6,6 @@
 	Integration of libcurl's multi interface with Boost.Asio
 */
 
-#include <boost/bind.hpp>
 #include <curl-asio/easy.h>
 #include <curl-asio/error_code.h>
 #include <curl-asio/multi.h>

@@ -9,7 +9,6 @@
 
 #include <mutex>
 #include <memory>
-#include <boost/lexical_cast.hpp>
 #include <curl-asio/initialization.h>
 #include <curl-asio/native.h>
 
@@ -43,7 +42,7 @@ initialization::initialization()
 
 	if (ec != native::CURLE_OK)
 	{
-		throw std::runtime_error("curl_global_init failed with error code " + boost::lexical_cast<std::string>(ec));
+		throw std::runtime_error("curl_global_init failed with error code " + std::to_string(ec));
 	}
 }
 

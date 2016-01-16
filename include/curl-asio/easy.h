@@ -78,7 +78,7 @@
 	}
 
 #define IMPLEMENT_CURL_OPTION_GET_STRING(FUNCTION_NAME, OPTION_NAME) \
-	inline std::string FUNCTION_NAME() \
+	inline std::string FUNCTION_NAME() const \
 	{ \
 		char *info = NULL; \
 		std::error_code ec = std::error_code(native::curl_easy_getinfo(handle_, OPTION_NAME, &info)); \
@@ -87,7 +87,7 @@
 	}
 
 #define IMPLEMENT_CURL_OPTION_GET_DOUBLE(FUNCTION_NAME, OPTION_NAME) \
-	inline double FUNCTION_NAME() \
+	inline double FUNCTION_NAME() const \
 	{ \
 		double info; \
 		std::error_code ec = std::error_code(native::curl_easy_getinfo(handle_, OPTION_NAME, &info)); \
@@ -96,7 +96,7 @@
 	}
 
 #define IMPLEMENT_CURL_OPTION_GET_LONG(FUNCTION_NAME, OPTION_NAME) \
-	inline long FUNCTION_NAME() \
+	inline long FUNCTION_NAME() const \
 	{ \
 		long info; \
 		std::error_code ec = std::error_code(native::curl_easy_getinfo(handle_, OPTION_NAME, &info)); \
@@ -105,7 +105,7 @@
 	}
 
 #define IMPLEMENT_CURL_OPTION_GET_LIST(FUNCTION_NAME, OPTION_NAME) \
-	inline std::vector<std::string> FUNCTION_NAME() \
+	inline std::vector<std::string> FUNCTION_NAME() const \
 	{ \
 		struct native::curl_slist *info; \
 		std::vector<std::string> results; \

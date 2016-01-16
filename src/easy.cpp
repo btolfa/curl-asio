@@ -484,7 +484,7 @@ void easy::handle_completion(const std::error_code& err)
 	}
 
 	multi_registered_ = false;
-	asio::post(io_service_.get_executor(), [this, err]{handler_(err);});
+	asio::post(io_service_.get_executor(), [h = std::move(handler_), err]{h(err);});
 }
 
 void easy::init()
