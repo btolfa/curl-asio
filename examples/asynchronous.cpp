@@ -1,7 +1,5 @@
 #include <curl-asio.h>
-#include <iostream>
 #include <fstream>
-#include <memory> // for std::auto_ptr
 
 void handle_download_completed(const std::error_code& err, std::string url, std::shared_ptr<curl::easy> easy)
 {

@@ -1,5 +1,4 @@
 #include <curl-asio.h>
-#include <boost/make_shared.hpp>
 #include <fstream>
 
 int main(int argc, char* argv[])
