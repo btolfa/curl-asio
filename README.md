@@ -3,48 +3,59 @@ curl-asio
 
 **Here be dragons. Although this library generally works quite well, it is still being developed and has not been extensively tested.** You will probably be fine, but don't look at me when things catch fire.
 
-This library makes use of libcurl's multi interface in order to enable easy integration into Boost.Asio applications.
+This library makes use of libcurl's multi interface in order to enable easy integration into standalone [Asio](http://think-async.com/) applications.
 
 * **simple interface** - Download and upload anything, synchronously or asynchronously, with just a few lines of code.
 * **familiar** - If you have used libcurl in a C application before, you will feel right at home.
-* **exceptions** - Libcurl errors throw exceptions. Integrates nicely with Boost.System's error_code class.
+* **exceptions** - Libcurl errors throw exceptions. Integrates nicely with std::error_code class.
 * **useful wrappers** - C++ interfaces for libcurl's easy, multi, form, share and string list containers. All setopt calls are wrapped for type safety.
 * **source/sink concept** - Works nicely with Boost.Iostreams
 
 Installation
 ------------
-1. If not already done, install cURL and its header files
+1. If not already done, install cURL and its header files, Boost header files and Asio header
 2. Clone this git repository. There are no tags or packages yet.
-3. Run CMake and point it to cURL
-4. `make && make install`
+3. Run CMake and point it to cURL, Boost and Asio
+
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
 
 Example
 -------
 
 ```c++
-#include <boost/asio.hpp>
-#include <boost/make_shared.hpp>
 #include <curl-asio.h>
 #include <fstream>
 
 int main(int argc, char* argv[])
 {
-	// this example program downloads argv[1] to argv[2] (arg validation omitted for readability)
+	// expect two arguments
+	if (argc != 3)
+	{
+		std::cerr << "usage: " << argv[0] << " url file" << std::endl;
+		return 1;
+	}
+
+	// this example program downloads argv[1] to argv[2]
 	char* url = argv[1];
 	char* file_name = argv[2];
 	
 	// start by creating an io_service object
-	boost::asio::io_service io_service;
+	asio::io_service io_service;
 	
 	// construct an instance of curl::easy
 	curl::easy downloader(io_service);
 	
 	// set the object's properties
 	downloader.set_url(url);
-	downloader.set_sink(boost::make_shared<std::ofstream>(file_name, std::ios::binary));
+	downloader.set_sink(std::make_shared<std::ofstream>(file_name, std::ios::binary));
 	
 	// download the file
-	boost::system::error_code ec;
+	std::error_code ec;
 	downloader.perform(ec);
 
 	// error handling
