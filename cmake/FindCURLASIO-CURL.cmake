@@ -90,3 +90,10 @@ FIND_PACKAGE_HANDLE_STANDARD_ARGS(CURL
 	FAIL_MESSAGE
 		"Could not find libcurl, ensure it is in either the system's or CMake's path, or set CURL_ROOT."
 	)
+
+if (CURL_FOUND)
+
+    add_library(curl::curl INTERFACE IMPORTED)
+    set_property(TARGET curl::curl PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${CURL_INCLUDE_DIR}")
+    set_property(TARGET curl::curl PROPERTY INTERFACE_LINK_LIBRARIES "${CURL_LIBRARIES}")
+endif()

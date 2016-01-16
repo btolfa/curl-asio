@@ -1,33 +1,10 @@
-# curl-asio
-# Seamlessly integrate libcurl with Boost.Asio
-#
-# Copyright (c) 2013 Oliver Kuckertz <oliver.kuckertz@mologie.de>
-# See COPYING for license information.
+cmake_minimum_required (VERSION 3.0 FATAL_ERROR)
+project(examples CXX)
 
 find_package(Threads REQUIRED)
 
-INCLUDE_DIRECTORIES(
-	${CURLASIO_INCLUDE_DIR}
-	${CURL_INCLUDE_DIR}
-	${Boost_INCLUDE_DIRS}
-	)
+add_executable(asynchronous asynchronous.cpp)
+target_link_libraries(asynchronous Threads::Threads curl-asio)
 
-macro(ADD_EXAMPLE EXAMPLE_NAME)
-	SET(EXAMPLE_PROJECT_NAME "${EXAMPLE_NAME}_example")
-	SET(EXAMPLE_SOURCE_FILES "${EXAMPLE_NAME}.cpp")
-	ADD_EXECUTABLE(${EXAMPLE_PROJECT_NAME} ${EXAMPLE_SOURCE_FILES})
-	ADD_DEFINITIONS(${EXAMPLE_PROJECT_DEFINITIONS})
-	LINK_DIRECTORIES(${Boost_LIBRARY_DIR})
-	TARGET_LINK_LIBRARIES(${EXAMPLE_PROJECT_NAME}
-		${CMAKE_THREAD_LIBS_INIT}
-		${EXAMPLE_LINK_TARGET}
-		${CURL_LIBRARIES}
-		${Boost_LIBRARIES}
-		)
-	IF(CURLASIO_STATICLIB)
-		TARGET_LINK_LIBRARIES(${EXAMPLE_PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT} ${CURL_LIBRARIES})
-	ENDIF()
-endmacro()
-
-ADD_EXAMPLE(asynchronous)
-ADD_EXAMPLE(synchronous)
+add_executable(synchronous synchronous.cpp)
+target_link_libraries(synchronous Threads::Threads curl-asio)

@@ -2,12 +2,18 @@ cmake_minimum_required (VERSION 3.0 FATAL_ERROR)
 
 project(curl-asio CXX)
 
+# Configuration options
+option(OPTION_BUILD_EXAMPLES "Build examples." OFF)
+
 # Append the path to the custom cmake modules from this project to the CMAKE_MODULE_PATH
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 
 find_package(Boost)
+
+# You can hint with ASIO_ROOT variable
 find_package(Asio REQUIRED)
+
 find_package(CURLASIO-CURL REQUIRED)
 
 set(HEADERS
@@ -35,15 +41,15 @@ set(SOURCES
     ${HEADERS}
 )
 
-include_directories(include
-        ${ASIO_INCLUDE_DIRS}
-        ${Boost_INCLUDE_DIRS}
-        ${CURL_INCLUDE_DIR})
-
 add_library(curl-asio STATIC ${SOURCES})
+target_include_directories(curl-asio PUBLIC include ${Boost_INCLUDE_DIRS})
 target_link_libraries(curl-asio
-        ${CURL_LIBRARIES}
+        curl::curl
         asio::asio
         )
 
 set_property(TARGET curl-asio PROPERTY CXX_STANDARD 14)
+
+if (OPTION_BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
